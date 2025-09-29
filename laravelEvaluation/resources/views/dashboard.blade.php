@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EMPLOYEE EVALUATION</title>
+    <title>{{ ucfirst($role) }} Dashboard - Faculty Evaluation System</title>
     <style>
         body { 
             font-family: Arial, sans-serif; 
@@ -214,7 +214,7 @@
     <div class="header">
         <div class="header-left">
             <div class="user-avatar">👤</div>
-            <div class="welcome-text">Welcome Back... Administrator</div>
+            <div class="welcome-text">Welcome Back... {{ ucfirst($role) }}</div>
         </div>
         
         <div class="main-title">EMPLOYEE EVALUATION</div>
@@ -236,35 +236,84 @@
     </div>
 
     <div class="main-content">
+        @if(session('success'))
+            <div style="background: #d4edda; color: #155724; padding: 15px; border-radius: 8px; margin-bottom: 20px; border: 1px solid #c3e6cb;">
+                {{ session('success') }}
+            </div>
+        @endif
+        
         <div class="get-started">GET STARTED...</div>
-        <div class="evaluate-today">Evaluate Today</div>
-        <button class="cta-button">Go to Evaluations</button>
+        <div class="evaluate-today">
+            @if($role === 'admin')
+                Manage Faculty Evaluations Today
+            @else
+                Complete Your Evaluations Today
+            @endif
+        </div>
+        <button class="cta-button">
+            @if($role === 'admin')
+                Manage Evaluations
+            @else
+                Go to Evaluations
+            @endif
+        </button>
     </div>
 
     <div class="dashboard-panel">
         <div class="dashboard-title">Dashboard</div>
         <div class="dashboard-grid">
-            <div class="dashboard-item">
-                <div class="icon">👤+</div>
-                <div class="label">Employee</div>
-            </div>
-            <div class="dashboard-item">
-                <div class="icon">📋</div>
-                <div class="label">Position</div>
-            </div>
-            <div class="dashboard-item">
-                <div class="icon">📄</div>
-                <div class="label">Evaluation Form</div>
-            </div>
-            <div class="dashboard-item">
-                <div class="icon">🏢</div>
-                <div class="label">Department</div>
-            </div>
-            <div class="dashboard-item logout-item">
+            @if($role === 'admin')
+                <div class="dashboard-item">
+                    <div class="icon">👤+</div>
+                    <div class="label">Manage Users</div>
+                </div>
+                <div class="dashboard-item">
+                    <div class="icon">📋</div>
+                    <div class="label">View Reports</div>
+                </div>
+                <div class="dashboard-item">
+                    <div class="icon">📄</div>
+                    <div class="label">Evaluation Forms</div>
+                </div>
+                <div class="dashboard-item">
+                    <div class="icon">🏢</div>
+                    <div class="label">Departments</div>
+                </div>
+            @else
+                <div class="dashboard-item">
+                    <div class="icon">📝</div>
+                    <div class="label">My Evaluations</div>
+                </div>
+                <div class="dashboard-item">
+                    <div class="icon">📊</div>
+                    <div class="label">My Progress</div>
+                </div>
+                <div class="dashboard-item">
+                    <div class="icon">📚</div>
+                    <div class="label">Courses</div>
+                </div>
+                <div class="dashboard-item">
+                    <div class="icon">⚙️</div>
+                    <div class="label">Settings</div>
+                </div>
+            @endif
+            <div class="dashboard-item logout-item" onclick="logout()">
                 <div class="icon">🚪</div>
                 <div class="label">Log Out</div>
             </div>
         </div>
     </div>
+
+    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+        @csrf
+    </form>
+
+    <script>
+        function logout() {
+            if (confirm('Are you sure you want to logout?')) {
+                document.getElementById('logout-form').submit();
+            }
+        }
+    </script>
 </body>
 </html>
