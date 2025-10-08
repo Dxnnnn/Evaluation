@@ -4,215 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ ucfirst($role) }} Dashboard - Faculty Evaluation System</title>
-    <style>
-        body { 
-            font-family: Arial, sans-serif; 
-            background: #f5f7fb url('{{ asset('background.jpg') }}') no-repeat center center fixed;
-            background-size: cover;
-            margin: 0;
-            position: relative;
-        }
-        
-        body::before {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(255, 255, 255, 0.8);
-            z-index: 1;
-        }
-        
-        .header {
-            background: #1e3a8a;
-            color: white;
-            padding: 15px 30px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            position: relative;
-            z-index: 10;
-        }
-        
-        .header-left {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-        
-        .user-avatar {
-            width: 40px;
-            height: 40px;
-            background: #3b82f6;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 18px;
-        }
-        
-        .welcome-text {
-            background: #f58606ff;
-            padding: 8px 15px;
-            border-radius: 6px;
-            font-size: 14px;
-        }
-        
-        .main-title {
-            font-size: 24px;
-            font-weight: bold;
-            text-transform: uppercase;
-        }
-        
-        .header-right {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-        }
-        
-        .logo {
-            width: 50px;
-            height: 50px;
-            background: #3b82f6;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-weight: bold;
-            font-size: 14px;
-            position: relative;
-        }
-        
-        .logo::after {
-           
-            position: absolute;
-            bottom: -25px;
-            left: 50%;
-            transform: translateX(-50%);
-            font-size: 10px;
-            white-space: nowrap;
-            color: #8a5b1eff;
-        }
-        
-        .menu-icon {
-            width: 30px;
-            height: 30px;
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 2px;
-            cursor: pointer;
-        }
-        
-        .menu-icon div {
-            width: 6px;
-            height: 6px;
-            background: white;
-            border-radius: 1px;
-        }
-        
-        .main-content {
-            position: relative;
-            z-index: 5;
-            padding: 60px 40px;
-            text-align: center;
-        }
-        
-        .get-started {
-            font-size: 48px;
-            font-weight: bold;
-            background: linear-gradient(45deg, #dc2626, #7c3aed);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            margin-bottom: 10px;
-        }
-        
-        .evaluate-today {
-            font-size: 24px;
-            color: #dc2626;
-            margin-bottom: 30px;
-        }
-        
-        .cta-button {
-            background: #16a34a;
-            color: white;
-            padding: 15px 30px;
-            border: none;
-            border-radius: 25px;
-            font-size: 18px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: background 0.3s;
-        }
-        
-        .cta-button:hover {
-            background: #15803d;
-        }
-        
-        .dashboard-panel {
-            position: fixed;
-            right: 30px;
-            top: 50%;
-            transform: translateY(-50%);
-            background: #dbeafe;
-            padding: 25px;
-            border-radius: 15px;
-            width: 200px;
-            position: relative;
-            z-index: 5;
-        }
-        
-        .dashboard-title {
-            text-align: center;
-            font-size: 18px;
-            font-weight: bold;
-            margin-bottom: 20px;
-            color: #1e3a8a;
-        }
-        
-        .dashboard-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-        }
-        
-        .dashboard-item {
-            text-align: center;
-            padding: 15px 10px;
-            background: white;
-            border-radius: 10px;
-            cursor: pointer;
-            transition: transform 0.2s;
-        }
-        
-        .dashboard-item:hover {
-            transform: translateY(-2px);
-        }
-        
-        .dashboard-item .icon {
-            font-size: 24px;
-            margin-bottom: 8px;
-        }
-        
-        .dashboard-item .label {
-            font-size: 12px;
-            color: #374151;
-            font-weight: 500;
-        }
-        
-        .logout-item {
-            grid-column: 1 / -1;
-            background: #fef2f2;
-            color: #dc2626;
-        }
-    </style>
+
+    <link rel="stylesheet" href="dashboard.css">
+    
 </head>
 <body>
     <div class="header">
         <div class="header-left">
+             <button class="toggle-btn" onclick="toggleSidebar()">☰</button>
             <div class="user-avatar">👤</div>
             <div class="welcome-text">Welcome Back... {{ ucfirst($role) }}</div>
         </div>
@@ -221,17 +20,8 @@
         
         <div class="header-right">
             <div class="logo">BC</div>
-            <div class="menu-icon">
-                <div></div>
-                <div></div>
-                <div></div>
-                <div></div>
-                <div></div>
-                <div></div>
-                <div></div>
-                <div></div>
-                <div></div>
-            </div>
+        
+        
         </div>
     </div>
 
@@ -259,61 +49,106 @@
         </button>
     </div>
 
-    <div class="dashboard-panel">
-        <div class="dashboard-title">Dashboard</div>
-        <div class="dashboard-grid">
+    <!-- Sidebar Overlay -->
+    <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
+    
+    <!-- Sidebar Menu -->
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <div class="sidebar-title">Menu</div>
+            <button class="close-btn" onclick="closeSidebar()">×</button>
+        </div>
+        
+        <div class="sidebar-menu">
             @if($role === 'admin')
-                <div class="dashboard-item">
+                <a href="#" class="sidebar-item">
                     <div class="icon">👤+</div>
                     <div class="label">Manage Users</div>
-                </div>
-                <div class="dashboard-item">
+                </a>
+                <a href="#" class="sidebar-item">
                     <div class="icon">📋</div>
-                    <div class="label">View Reports</div>
-                </div>
-                <div class="dashboard-item">
+                    <div class="label">Employee List</div>
+                </a>
+                <a href="#" class="sidebar-item">
                     <div class="icon">📄</div>
                     <div class="label">Evaluation Forms</div>
-                </div>
-                <div class="dashboard-item">
+                </a>
+                <a href="#" class="sidebar-item">
                     <div class="icon">🏢</div>
                     <div class="label">Departments</div>
-                </div>
-            @else
-                <div class="dashboard-item">
-                    <div class="icon">📝</div>
-                    <div class="label">My Evaluations</div>
-                </div>
-                <div class="dashboard-item">
+                </a>
+                <a href="#" class="sidebar-item">
                     <div class="icon">📊</div>
-                    <div class="label">My Progress</div>
-                </div>
-                <div class="dashboard-item">
-                    <div class="icon">📚</div>
-                    <div class="label">Courses</div>
-                </div>
-                <div class="dashboard-item">
+                    <div class="label">Positions</div>
+                </a>
+                <a href="#" class="sidebar-item">
                     <div class="icon">⚙️</div>
                     <div class="label">Settings</div>
-                </div>
+                </a>
+            @else
+                <a href="#" class="sidebar-item">
+                    <div class="icon">📝</div>
+                    <div class="label">My Evaluations</div>
+                </a>
+                <a href="#" class="sidebar-item">
+                    <div class="icon">⚙️</div>
+                    <div class="label">Settings</div>
+                </a>
             @endif
-            <div class="dashboard-item logout-item" onclick="logout()">
+            
+            <a href="#" class="sidebar-item logout-item" onclick="logout()">
                 <div class="icon">🚪</div>
                 <div class="label">Log Out</div>
-            </div>
+            </a>
         </div>
     </div>
+
 
     <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
         @csrf
     </form>
 
     <script>
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('sidebarOverlay');
+            
+            if (sidebar.style.display === 'none' || sidebar.style.display === '') {
+                sidebar.style.display = 'block';
+                sidebar.classList.add('open');
+                overlay.classList.add('open');
+            } else {
+                sidebar.classList.remove('open');
+                overlay.classList.remove('open');
+                setTimeout(() => {
+                    sidebar.style.display = 'none';
+                }, 300); // Wait for animation to complete
+            }
+        }
+        
+        function closeSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('sidebarOverlay');
+            
+            sidebar.classList.remove('open');
+            overlay.classList.remove('open');
+            setTimeout(() => {
+                sidebar.style.display = 'none';
+            }, 300); // Wait for animation to complete
+        }
+        
         function logout() {
             if (confirm('Are you sure you want to logout?')) {
                 document.getElementById('logout-form').submit();
             }
         }
+        
+        // Close sidebar when pressing Escape key
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                closeSidebar();
+            }
+        });
     </script>
 </body>
 </html>
