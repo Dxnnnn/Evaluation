@@ -65,7 +65,7 @@
                     <div class="icon">👤+</div>
                     <div class="label">Manage Users</div>
                 </a>
-                <a href="#" class="sidebar-item">
+                <a href="{{ route('employee.list') }}" class="sidebar-item">
                     <div class="icon">📋</div>
                     <div class="label">Employee List</div>
                 </a>
