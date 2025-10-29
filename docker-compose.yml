@@ -2,46 +2,47 @@ services:
   nginx:
     build:
       context: ./docker/nginx
-  
-    
     ports:
       - "80:80"
     volumes:
       - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
-      - ./laravelEvaluation:/var/www/html # replace project_name with your desired value
+      - ./laravelEvaluation:/var/www/html
     depends_on:
       - php
 
   php:
     build:
       context: ./docker/php
-   
     expose:
-      - "9000" # replaced 9001 if there is conflict on this port.
+      - "9000"
     ports:
-      - "8081:9000" # replaced 9001 if there is conflict on this port.
+      - "8081:9000"
     volumes:
-      - ./laravelEvaluation:/var/www/html # replace project_name with your desired value
+      - ./laravelEvaluation:/var/www/html
     working_dir: /var/www/html
     depends_on:
-      - mysql
+      mysql:
+        condition: service_healthy  # Wait for MySQL to be ready
 
   mysql:
     build:
       context: ./docker/mysql
     platform: linux/x86_64
     ports:
-      - "3307:3307" # replaced 3307 if there is conflict on this port. usuall value is 3306
+      - "3307:3306"  # Host:Container
     environment:
-      - "LANG=C.UTF-8"
-      - "MYSQL_ROOT_PASSWORD=root" # replaced password on your desired value
-      - "MYSQL_DATABASE=laravelevaluation" # replaced database name on your desired value
-      - "MYSQL_PASSWORD=030223"
-    command: --port=3307
+      LANG: C.UTF-8
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: laravelevaluation
+      MYSQL_USER: laravel  # Optional: create a non-root user
+      MYSQL_PASSWORD: password
     volumes:
-      - type: volume
-        source: mysql-volume
-        target: /var/lib/mysql
+      - mysql-volume:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-ppassword"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
 
 networks:
   default:
