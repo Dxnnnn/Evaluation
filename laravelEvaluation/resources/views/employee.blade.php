@@ -221,7 +221,7 @@
                     <div class="icon">📋</div>
                     <div class="label">Employee List</div>
                 </a>
-                <a href="#" class="sidebar-item">
+                <a href="{{ route('evaluation.form') }}" class="sidebar-item">
                     <div class="icon">📄</div>
                     <div class="label">Evaluation Forms</div>
                 </a>
@@ -238,7 +238,7 @@
                     <div class="label">Settings</div>
                 </a>
             @else
-                <a href="#" class="sidebar-item">
+                <a href="{{ route('evaluation.form') }}" class="sidebar-item">
                     <div class="icon">📝</div>
                     <div class="label">My Evaluations</div>
                 </a>
