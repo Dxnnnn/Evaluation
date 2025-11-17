@@ -5,13 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ ucfirst($role) }} Dashboard - Faculty Evaluation System</title>
 
-    <link rel="stylesheet" href="dashboard.css">
+    <link rel="stylesheet" href="{{ asset('dashboard.css') }}">
     
 </head>
 <body>
     <div class="header">
         <div class="header-left">
-             <button class="toggle-btn" onclick="toggleSidebar()">☰</button>
+            <button class="toggle-btn" onclick="toggleSidebar()">☰</button>
             <div class="user-avatar">👤</div>
             <div class="welcome-text">Welcome Back... {{ ucfirst($role) }}</div>
         </div>
@@ -20,8 +20,6 @@
         
         <div class="header-right">
             <div class="logo">BC</div>
-        
-        
         </div>
     </div>
 
@@ -40,7 +38,7 @@
                 Complete Your Evaluations Today
             @endif
         </div>
-        <button class="cta-button">
+        <button class="cta-button" onclick="window.location='{{ route('evaluation.form') }}'">
             @if($role === 'admin')
                 Manage Evaluations
             @else
@@ -69,9 +67,9 @@
                     <div class="icon">📋</div>
                     <div class="label">Employee List</div>
                 </a>
-                <a href="#" class="sidebar-item">
+                <a href="{{ route('evaluation.form') }}" class="sidebar-item">
                     <div class="icon">📄</div>
-                    <div class="label">Evaluation Forms</div>
+                    <div class="label">Evaluation Form</div>
                 </a>
                 <a href="#" class="sidebar-item">
                     <div class="icon">🏢</div>
@@ -86,7 +84,7 @@
                     <div class="label">Settings</div>
                 </a>
             @else
-                <a href="#" class="sidebar-item">
+                <a href="{{ route('evaluation.form') }}" class="sidebar-item">
                     <div class="icon">📝</div>
                     <div class="label">My Evaluations</div>
                 </a>
@@ -102,7 +100,6 @@
             </a>
         </div>
     </div>
-
 
     <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
         @csrf
@@ -122,7 +119,7 @@
                 overlay.classList.remove('open');
                 setTimeout(() => {
                     sidebar.style.display = 'none';
-                }, 300); // Wait for animation to complete
+                }, 300);
             }
         }
         
@@ -134,7 +131,7 @@
             overlay.classList.remove('open');
             setTimeout(() => {
                 sidebar.style.display = 'none';
-            }, 300); // Wait for animation to complete
+            }, 300);
         }
         
         function logout() {
@@ -143,7 +140,6 @@
             }
         }
         
-        // Close sidebar when pressing Escape key
         document.addEventListener('keydown', function(event) {
             if (event.key === 'Escape') {
                 closeSidebar();
