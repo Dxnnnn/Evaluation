@@ -73,18 +73,7 @@
                     <div class="icon">📄</div>
                     <div class="label">Evaluation Forms</div>
                 </a>
-                <a href="#" class="sidebar-item">
-                    <div class="icon">🏢</div>
-                    <div class="label">Departments</div>
-                </a>
-                <a href="#" class="sidebar-item">
-                    <div class="icon">📊</div>
-                    <div class="label">Positions</div>
-                </a>
-                <a href="#" class="sidebar-item">
-                    <div class="icon">⚙️</div>
-                    <div class="label">Settings</div>
-                </a>
+                
             @else
                 <a href="#" class="sidebar-item">
                     <div class="icon">📝</div>
