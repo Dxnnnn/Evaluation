@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 
 class EvaluationController extends Controller
@@ -11,10 +12,14 @@ class EvaluationController extends Controller
     // Show the evaluation form
     public function index()
     {
+        $user = Auth::user();
+        $role = $user ? $user->role : 'user';
         $evaluationData = Session::get('evaluation_data', null);
         $submittedAt = Session::get('submitted_at', null);
 
         return view('evaluation', [
+            'role' => $role,
+            'user' => $user,
             'submittedData' => $evaluationData,
             'submittedAt' => $submittedAt,
         ]);
@@ -23,7 +28,8 @@ class EvaluationController extends Controller
     // Handle form submission (initial or edit)
     public function submit(Request $request)
     {
-        $statementsCount = 5; // total statements
+        // Count total statements dynamically
+        $statementsCount = 42; // 6 categories × 7 statements each
 
         $ratings = [];
         for ($i = 0; $i < $statementsCount; $i++) {
