@@ -34,8 +34,8 @@ Route::middleware(['auth'])->group(function () {
 
     // Evaluation Form
     Route::get('/evaluation-form', [EvaluationController::class, 'index'])->name('evaluation.form');
-    Route::post('/evaluation-form', [EvaluationController::class, 'store'])->name('evaluation.submit');
-
+    Route::post('/evaluation-form', [EvaluationController::class, 'submit'])->name('evaluation.submit');
+    
     // Logout
     Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 });

@@ -10,26 +10,74 @@ use Carbon\Carbon;
 class EvaluationController extends Controller
 {
     // Show the evaluation form
-    public function index()
+    public function index(Request $request)
     {
         $user = Auth::user();
         $role = $user ? $user->role : 'user';
-        $evaluationData = Session::get('evaluation_data', null);
-        $submittedAt = Session::get('submitted_at', null);
+
+        // Get employee selected via query param (for switching employees)
+        $selectedEmployeeId = $request->query('employee_id', null);
+
+        // Get all evaluations from session (store multiple evaluations)
+        $allEvaluations = Session::get('evaluations', []);
+
+        $evaluationData = null;
+        $submittedAt = null;
+        $canEdit = false;
+        $hoursLeft = 0;
+
+        // If an employee is selected, check if they have an evaluation
+        if ($selectedEmployeeId && isset($allEvaluations[$selectedEmployeeId])) {
+            $evaluationData = $allEvaluations[$selectedEmployeeId]['data'];
+            $submittedAt = $allEvaluations[$selectedEmployeeId]['submitted_at'];
+
+            // Calculate if still editable
+            if ($submittedAt) {
+                $submittedTime = Carbon::parse($submittedAt);
+                $hoursPassed = $submittedTime->diffInHours(Carbon::now());
+
+                if ($hoursPassed < 24) {
+                    $canEdit = true;
+                    $hoursLeft = 24 - $hoursPassed;
+                }
+            }
+        }
 
         return view('evaluation', [
             'role' => $role,
             'user' => $user,
             'submittedData' => $evaluationData,
             'submittedAt' => $submittedAt,
+            'canEdit' => $canEdit,
+            'hoursLeft' => $hoursLeft,
+            'selectedEmployeeId' => $selectedEmployeeId,
+            'allEvaluations' => $allEvaluations
         ]);
     }
 
     // Handle form submission (initial or edit)
     public function submit(Request $request)
     {
-        // Count total statements dynamically
-        $statementsCount = 42; // 6 categories × 7 statements each
+        $employeeId = $request->employee_id;
+
+        // Get all evaluations from session
+        $allEvaluations = Session::get('evaluations', []);
+
+        // Check if this employee already has an evaluation
+        $existingEvaluation = isset($allEvaluations[$employeeId]) ? $allEvaluations[$employeeId] : null;
+        $submittedAt = $existingEvaluation ? $existingEvaluation['submitted_at'] : null;
+
+        // If already submitted, enforce 24-hour edit rule
+        if ($submittedAt) {
+            $submittedTime = Carbon::parse($submittedAt);
+
+            if ($submittedTime->diffInHours(now()) >= 24) {
+                return back()->withErrors("Editing is only allowed within 24 hours of submission.");
+            }
+        }
+
+        // Count total statements dynamically (6 categories × 7 statements = 42)
+        $statementsCount = 42;
 
         $ratings = [];
         for ($i = 0; $i < $statementsCount; $i++) {
@@ -40,27 +88,25 @@ class EvaluationController extends Controller
         }
 
         $evaluationData = [
-            'employee_id' => $request->employee_id,
+            'employee_id' => $employeeId,
             'ratings' => $ratings,
             'remarks' => $request->remarks,
         ];
 
-        // Save in session
-        Session::put('evaluation_data', $evaluationData);
-        Session::put('submitted_at', now());
+        // set a submitted timestamp (keep original if editing)
+        $nowTimestamp = $submittedAt ? $submittedAt : now();
+        $evaluationData['submitted_at'] = $nowTimestamp; // inside data for Blade
 
-        return redirect()->route('evaluation.form')
-                         ->with('success', 'Evaluation submitted successfully!');
-    }
+        // Save evaluation for this specific employee
+        $allEvaluations[$employeeId] = [
+            'data' => $evaluationData,
+            'submitted_at' => $nowTimestamp
+        ];
 
-    // Check if editing is allowed (optional helper)
-    public function canEdit()
-    {
-        $submittedAt = Session::get('submitted_at', null);
-        if (!$submittedAt) {
-            return false;
-        }
+        // Save all evaluations back to session
+        Session::put('evaluations', $allEvaluations);
 
-        return Carbon::now()->diffInHours(Carbon::parse($submittedAt)) < 24;
+        return redirect()->route('evaluation.form', ['employee_id' => $employeeId])
+                         ->with('success', 'Evaluation saved successfully!');
     }
 }
