@@ -16,7 +16,14 @@
             <div class="welcome-text">Welcome Back... {{ ucfirst($role) }}</div>
         </div>
         
-        <div class="main-title">EMPLOYEE EVALUATION</div>
+        <div class="main-title">
+            @if($role === 'admin')
+                EMPLOYEE EVALUATION
+            @else
+                STUDENT EVALUATION
+            @endif
+        </div>
+
         
         <div class="header-right">
             <div class="logo">BC</div>
@@ -40,13 +47,18 @@
                 Complete Your Evaluations Today
             @endif
         </div>
-        <button class="cta-button">
-            @if($role === 'admin')
+       
+        @if($role === 'admin')
+            <button class="cta-button">
                 Manage Evaluations
-            @else
+            </button>
+                
+        @else
+            <a href="{{ route('student.evaluation') }}" class="cta-button">
                 Go to Evaluations
-            @endif
-        </button>
+            </a>
+        @endif
+        
     </div>
 
     <!-- Sidebar Overlay -->
@@ -86,7 +98,7 @@
                     <div class="label">Settings</div>
                 </a>
             @else
-                <a href="#" class="sidebar-item">
+                <a href="{{ route('student.evaluation') }}" class="sidebar-item">
                     <div class="icon">📝</div>
                     <div class="label">My Evaluations</div>
                 </a>

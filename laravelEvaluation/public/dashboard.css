@@ -154,10 +154,13 @@
             font-weight: bold;
             cursor: pointer;
             transition: background 0.3s;
+            text-decoration: none;
+            display: inline-block;
         }
         
         .cta-button:hover {
             background: #15803d;
+            color: white;
         }
         
         .sidebar {
@@ -267,5 +270,44 @@
         
         .logout-item:hover {
             background: rgba(220, 38, 38, 0.3);
+        }
+        
+        /* Evaluation Form Styles */
+        #evaluation-form input[type="text"],
+        #evaluation-form input[type="date"],
+        #evaluation-form select,
+        #evaluation-form textarea {
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+        
+        #evaluation-form input[type="text"]:focus,
+        #evaluation-form input[type="date"]:focus,
+        #evaluation-form select:focus,
+        #evaluation-form textarea:focus {
+            outline: none;
+            border-color: #1e3a8a;
+            box-shadow: 0 0 0 3px rgba(30, 58, 138, 0.1);
+        }
+        
+        #evaluation-form table input[type="radio"] {
+            cursor: pointer;
+            width: 18px;
+            height: 18px;
+        }
+        
+        #evaluation-form table input[type="radio"]:hover {
+            transform: scale(1.1);
+        }
+        
+        #evaluation-form button[type="submit"]:hover {
+            background: #15803d;
+        }
+        
+        #evaluation-form table tbody tr:hover {
+            background: #f8f9fa;
+        }
+        
+        #evaluation-form table tbody tr:hover td {
+            background: #f8f9fa;
         }
         

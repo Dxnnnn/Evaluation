@@ -11,7 +11,7 @@ class UserSeeder extends Seeder
     public function run(): void
     {
         // Create Admin User
-        User::create([
+        User::updateOrCreate([
             'name' => 'Administrator',
             'email' => 'admin@example.com',
             'password' => Hash::make('admin123'),
@@ -20,7 +20,7 @@ class UserSeeder extends Seeder
         ]);
 
         // Create Student User
-        User::create([  
+        User::updateOrCreate([  
             'name' => 'Student',
             'email' => 'Dixni@gmail.com',
             'password' => Hash::make('user1'),
@@ -29,7 +29,7 @@ class UserSeeder extends Seeder
         ]);
 
         // Create another student for testing
-        User::create([
+        User::updateOrCreate([
             'name' => 'Student',
             'email' => 'student@example.com',
             'password' => Hash::make('student123'),
